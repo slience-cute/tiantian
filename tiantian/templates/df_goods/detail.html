@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>天天生鲜-商品详情</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/reset.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+	<script>
+		function add() {
+			var num = parseFloat($('.num_show').val());
+			var kucun = parseFloat($('.goods_kucun').html());
+			if(num<kucun){
+                $('.num_show').val(num+1);
+                $('.num_show').blur();
+            }else{
+			    alert('没库存啦！老哥！！')
+			}
+		}
+
+
+        function minus() {
+			var num = parseFloat($('.num_show').val());
+			var kucun = parseFloat($('.goods_kucun').html());
+			if(num>0){
+			    $('.num_show').val(num-1);
+				$('.num_show').blur();
+			}else{
+			    alert('在减就没啦！！！')
+			}
+
+        }
+
+        $(function () {
+			$('.num_show').blur(function () {
+			     var num = parseFloat($('.num_show').val());
+				 //var kucun = parseFloat($('.goods_cukun').text());
+				 var price = parseFloat($('#gprice').text());
+				 var total = num*price;
+				 $('#gtotal').text(total.toFixed(2)+'元');
+            });
+        });
+
+	</script>
+
+</head>
+<body>
+	<div class="header_con">
+		<div class="header">
+			<div class="welcome fl">欢迎来到天天生鲜!</div>
+			<div class="fr">
+				{% if request.session.user_name|default:'' != '' %}
+				<div class="login_btn fl">
+					欢迎您：<em>{{uname}}</em>
+					<span>|</span>
+					<a href="/user/logout">退出</a>
+				</div>
+			{% else %}
+				<div class="login_btn fl">
+					<a href="login.html">登录</a>
+					<span>|</span>
+					<a href="register.html">注册</a>
+				</div>
+			 {% endif %}
+				<div class="user_link fl">
+					<span>|</span>
+					<a href="/user/info">用户中心</a>
+					<span>|</span>
+					<a href="../df_user/cart.html">我的购物车</a>
+					<span>|</span>
+					<a href="../df_user/user_center_order.html">我的订单</a>
+				</div>
+			</div>
+		</div>		
+	</div>
+
+	<div class="search_bar clearfix">
+		<a href="index.html" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="search_con fl">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>
+		<div class="guest_cart fr">
+			<a href="../df_user/cart.html" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">1</div>
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>	
+				<span></span>			
+				<ul class="subnav">
+					<li><a href="list1_1_1" class="fruit">新鲜水果</a></li>
+					<li><a href="list2_1_1" class="seafood">海鲜水产</a></li>
+					<li><a href="list3_1_1" class="meet">猪牛羊肉</a></li>
+					<li><a href="list4_1_1" class="egg">禽类蛋品</a></li>
+					<li><a href="list5_1_1" class="vegetables">新鲜蔬菜</a></li>
+					<li><a href="list6_1_1" class="ice">速冻食品</a></li>>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<a href="index">全部分类</a>
+		<span>></span>
+		<a href="#">新鲜水果</a>
+		<span>></span>
+		<a href="#">商品详情</a>
+	</div>
+
+	<div class="goods_detail_con clearfix">
+		<div class="goods_detail_pic fl"><img src="/static/media/{{g.gpic}}" width="100%" height="100%"></div>
+
+		<div class="goods_detail_list fr">
+			<h3>{{g.gtitle}}</h3>
+			<p>{{g.gjianjie}}</p>
+			<div class="prize_bar">
+				<span class="show_pirze">¥<em id="gprice">{{g.gprice}}</em></span>
+				<span class="show_unit">单  位：{{g.gunit}}</span>
+				<span class="show_unit">库  存：<span class="goods_kucun">{{ g.gkucun }}</span></span>
+			</div>
+			<div class="goods_num clearfix">
+				<div class="num_name fl">数 量：</div>
+				<div class="num_add fl">
+					<input type="text" class="num_show fl" value="1">
+					<a href="javascript:add();" class="add fr">+</a>
+					<a href="javascript:minus();" class="minus fr">-</a>
+				</div> 
+			</div>
+			<div class="total">总价：<em id="gtotal">{{g.gprice}}</em></div>
+			<div class="operate_btn">
+				<a href="javascript:;" class="buy_btn">立即购买</a>
+				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
+			</div>
+		</div>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					{% for g in news%}
+					<li>
+						<a href="#"><img src="/static/media/{{g.gpic}}"></a>
+						<h4><a href="{{g.id}}">{{g.gtitle}}</a></h4>
+						<div class="prize">￥{{g.gprice}}</div>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<ul class="detail_tab clearfix">
+				<li class="active">商品介绍</li>
+				<li>评论</li>
+			</ul>
+
+			<div class="tab_content">
+				<dl>
+					<dt>商品详情：</dt>
+					<!-- |safe 涉及到转义 -->
+					<dd>{{g.gcontent|safe}}</dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="footer">
+		<div class="foot_link">
+			<a href="#">关于我们</a>
+			<span>|</span>
+			<a href="#">联系我们</a>
+			<span>|</span>
+			<a href="#">招聘人才</a>
+			<span>|</span>
+			<a href="#">友情链接</a>		
+		</div>
+		<p>CopyRight © 2016 北京天天生鲜信息技术有限公司 All Rights Reserved</p>
+		<p>电话：010-****888    京ICP备*******8号</p>
+	</div>
+	<div class="add_jump"></div>
+
+	<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript">
+
+		 $(document).ready(function(){
+
+        $(".buy_btn").click(function () {
+            num = parseInt($('.num_show').val());
+            $.get('/cart/add{{ goods.id }}_'+num+'/',function (data) {
+                $('#show_count').text(data.count);
+            });
+            location.href = "/cart/";
+
+        });
+
+        $('#add_cart').click(function() {
+
+            var $add_x = $('#add_cart').offset().top;
+            var $add_y = $('#add_cart').offset().left;
+
+            var $to_x = $('#show_count').offset().top;
+            var $to_y = $('#show_count').offset().left;
+
+            $(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'});
+
+            $('#add_cart').click(function() {
+
+    {#            		    先判断是否登录#}
+                if ($('.login_btn').text().indexOf('登录') >= 0) {
+                    alert('请登陆后购买');
+                    location.href('/user/login/');
+                    return;
+                }
+
+    {#                        购物车添加动画#}
+                $(".add_jump").stop().animate({
+                        'left': $to_y + 7,
+                        'top': $to_x + 7
+                    },
+                    "fast", function () {
+                        $(".add_jump").fadeOut('fast', function () {
+                            count = $('.num_show').val();
+                            $('#show_count').html(count);
+                    });
+                });
+
+                num = parseInt($('.num_show').val());
+                $.get('/cart/add{{ goods.id }}_'+num+'/',function (data) {
+                    $('#show_count').text(data.count);
+                });
+            });
+        });
+
+    });
+
+
+	</script>
+	
+</body>
+</html>
